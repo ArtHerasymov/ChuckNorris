@@ -1,11 +1,24 @@
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import React, { Component } from 'react';
+import { Platform, StyleSheet, Text, View, YellowBox } from 'react-native';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
+import Home from './screens/Home';
+import SearchResults from './screens/SearchResults';
 
-const MainNavigator = createStackNavigator({
-  Home: { screen: HomeScreen }
-});
+const RootStack = createStackNavigator(
+{
+  Home: { screen: Home },
+  SearchResults: { screen: SearchResults },
+},
+{
+    initialRouteName: 'Home',
+}
 
-const App = createAppContainer(MainNavigator);
+);
+
+const App = createAppContainer(RootStack);
+
+YellowBox.ignoreWarnings(
+      ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
+]);
 
 export default App;

@@ -7,14 +7,14 @@ import {
   Button
 } from 'react-native';
 
-class HomeActivity extends React.Component {
+class Home extends React.Component {
  
    static navigationOptions = {
     title: 'Home',
- headerStyle: {
-      backgroundColor: '#03A9F4',
+   headerStyle: {
+    backgroundColor: '#03A9F4',
     },
- headerTintColor: '#fff',
+    headerTintColor: '#fff',
     headerTitleStyle: {
       fontWeight: 'bold',
     },
@@ -27,7 +27,7 @@ class HomeActivity extends React.Component {
         <Text style={styles.headerText} >Home Activity</Text>
         <Button
           title="Go to Profile Activity"
-          onPress={() => this.props.navigation.navigate('Profile')}
+          onPress={() => this.props.navigation.navigate('SearchResults')}
         />
       </View>
     );
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   
 });
 
-export default HomeActivity;
+export default Home;
