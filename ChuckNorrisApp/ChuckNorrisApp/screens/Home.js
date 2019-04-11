@@ -8,6 +8,7 @@ import {
   Alert
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import uuid from 'uuid/v1';
 
 class Home extends React.Component {
  
@@ -16,21 +17,20 @@ class Home extends React.Component {
     this.state = { 
       query: 'Search...', 
       categories : [],
-      categoriesButtons: []
-    }
+      isLoading: true
+      }
+  }
 
+  componentDidMount() {
     fetch('https://api.chucknorris.io/jokes/categories', {
       method: 'GET'
     }).then(response => response.json())
       .then(categories => {
-        this.setState(categories)
+        for(let category of categories){
+          this.state.categories.push({key: uuid(), value: category})
+        }
+        this.setState({isLoading: false});
       })
-      let categoriesButtons = [];
-      for(let category of this.state.categories){
-        this.state.categoriesButtons.push(
-          <Button title={category} />
-        )
-      }
   }
 
    static navigationOptions = {
@@ -50,9 +50,12 @@ class Home extends React.Component {
   }
  
   render() {
+    if(this.state.isLoading){
+      return <View><Text>Loading...</Text></View>
+    }
     return (
       <View style={styles.container}>
-        <Text style={styles.headerText} >Home Activity</Text>
+        <Text style={styles.headerText}>Home Activity</Text>
         <TextInput 
           onChangeText = {(query) => this.setState({query})}
           style ={{height: 40,width: 300, borderColor: 'gray', borderWidth: 1}}
@@ -68,6 +71,9 @@ class Home extends React.Component {
           title="Go to Profile Activity"
           onPress={() => this.props.navigation.navigate('SearchResults')}
         />
+        {this.state.categories.map(category => (
+          <Button key={category.key} title={category.value} />
+        ))}
       </View>
       
     );

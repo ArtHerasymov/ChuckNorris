@@ -17,8 +17,4 @@ const RootStack = createStackNavigator(
 
 const App = createAppContainer(RootStack);
 
-YellowBox.ignoreWarnings(
-      ['Warning: isMounted(...) is deprecated', 'Module RCTImageLoader'
-]);
-
 export default App;

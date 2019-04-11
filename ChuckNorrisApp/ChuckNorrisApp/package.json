@@ -8,10 +8,12 @@
   },
   "dependencies": {
     "react": "16.8.3",
+    "react-cache": "^2.0.0-alpha.1",
     "react-native": "0.59.4",
     "react-native-gesture-handler": "^1.1.0",
     "react-native-navigation": "^2.17.0",
-    "react-navigation": "^3.7.1"
+    "react-navigation": "^3.7.1",
+    "uuid": "^3.3.2"
   },
   "devDependencies": {
     "@babel/core": "^7.4.3",
