@@ -9,27 +9,39 @@ class SearchResults extends React.Component {
     }
   };
 
+  state = {
+    jokes: [],
+    isLoading: true
+  };
+
+  componentDidMount(){
+    const { navigate } = this.props.navigation;
+    let query = this.props.navigation.state.params.query;
+    fetch(`https://api.chucknorris.io/jokes/search?query=${query}`, {method: 'GET'})
+      .then(response => response.json())
+      .then(res => {
+        this.setState({jokes: res.result}); // Array of jokes
+        this.setState({isLoading: false});
+      })
+  }
+
   render() {
+    
+    if(this.state.isLoading){
+      return <View><Text>Loading...</Text></View>
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.headerText}>SearchResults</Text>
-        <Button
-          title="Go to Home Activity"
-          onPress={() => this.props.navigation.navigate("Home")}
-        />
-
-        <Text style={styles.headerText}>create new profile screen </Text>
-        <Button
-          title="Go to new Profile Activity"
-          onPress={() => this.props.navigation.push("SearchResults")}
-        />
-
-        <Text style={styles.headerText}> Go Back </Text>
+        <Text>{this.props.navigation.state.params.query}</Text>
         <Button
           title="Go Back"
           onPress={() => this.props.navigation.goBack()}
         />
-
+        {this.state.jokes.map(joke => (
+          <Text>{joke.value}</Text>
+        )
+        )}
       </View>
     );
   }

@@ -80,7 +80,9 @@ class Home extends React.Component {
           title="Search"
           style ={{float: 'right'}}
           color="#841584"
-          onPress= {this.onPressSearch}
+          onPress= {() => {
+            this.props.navigation.navigate('SearchResults', { query: this.state.query });
+          }}
         />
         <Button
           title="Go to Profile Activity"
