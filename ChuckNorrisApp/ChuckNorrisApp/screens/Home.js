@@ -48,6 +48,21 @@ class Home extends React.Component {
   onPressSearch = () => {
     //Passing data to another screen
   }
+
+  onCategoryPressed = (category) => {
+    fetch(`https://api.chucknorris.io/jokes/random?category=${category}`)
+      .then(response => response.json())
+      .then(res => {
+        Alert.alert(
+          category,
+          res.value,
+          [{
+            text: 'Funny', onPress:  () => {}, style: 'cancel'
+          }],
+          {cancelable:false}
+        )
+      })
+  }
  
   render() {
     if(this.state.isLoading){
@@ -72,7 +87,7 @@ class Home extends React.Component {
           onPress={() => this.props.navigation.navigate('SearchResults')}
         />
         {this.state.categories.map(category => (
-          <Button key={category.key} title={category.value} />
+          <Button onPress={ this.onCategoryPressed.bind(this, category.value)} key={category.key} title={category.value} />
         ))}
       </View>
       
