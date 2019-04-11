@@ -7,7 +7,7 @@ import {
   Button,
   Alert
 } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { TextInput, ScrollView } from 'react-native-gesture-handler';
 import uuid from 'uuid/v1';
 
 class Home extends React.Component {
@@ -15,7 +15,7 @@ class Home extends React.Component {
   constructor() {
     super();
     this.state = { 
-      query: 'Search...', 
+      query: '', 
       categories : [],
       isLoading: true
       }
@@ -57,7 +57,7 @@ class Home extends React.Component {
           category,
           res.value,
           [{
-            text: 'Funny', onPress:  () => {}, style: 'cancel'
+            text: 'Funny'
           }],
           {cancelable:false}
         )
@@ -69,28 +69,28 @@ class Home extends React.Component {
       return <View><Text>Loading...</Text></View>
     }
     return (
-      <View style={styles.container}>
-        <Text style={styles.headerText}>Home Activity</Text>
-        <TextInput 
-          onChangeText = {(query) => this.setState({query})}
-          style ={{height: 40,width: 300, borderColor: 'gray', borderWidth: 1}}
-          value = { this.state.query }
-        />
-        <Button
-          title="Search"
-          style ={{float: 'right'}}
-          color="#841584"
-          onPress= {() => {
-            this.props.navigation.navigate('SearchResults', { query: this.state.query });
-          }}
-        />
-        <Button
-          title="Go to Profile Activity"
-          onPress={() => this.props.navigation.navigate('SearchResults')}
-        />
-        {this.state.categories.map(category => (
-          <Button onPress={ this.onCategoryPressed.bind(this, category.value)} key={category.key} title={category.value} />
-        ))}
+      <View>
+        <View style={{marginLeft: 3,marginTop:20, flexDirection: 'row'}}>
+          <TextInput 
+            onChangeText = {(query) => this.setState({query})}
+            style ={{ height: 40,width: 300, borderColor: 'gray', borderWidth: 1}}
+            placeholder = "Enter search query"
+            value = { this.state.query }
+          />
+          <Button
+            title="Search"
+            style ={{ width:50 ,float: 'right'}}
+            color="#841584"
+            onPress= {() => {
+              this.props.navigation.navigate('SearchResults', { query: this.state.query });
+            }}
+          />
+        </View>
+        <View style={{marginTop: 5}}>
+          {this.state.categories.map(category => (
+            <Button onPress={ this.onCategoryPressed.bind(this, category.value)} key={category.key} title={category.value} />
+          ))}
+        </View>
       </View>
       
     );

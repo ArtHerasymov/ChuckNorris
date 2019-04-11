@@ -1,11 +1,14 @@
 import React, { Component } from "react";
 import { Platform, StyleSheet, Text, View, Button } from "react-native";
+import { FlatList, ScrollView } from "react-native-gesture-handler";
+import uuid from 'uuid/v1';
+
 
 class SearchResults extends React.Component {
   static navigationOptions = {
     title: "SearchResults",
     headerStyle: {
-      backgroundColor: "#E91E63"
+      backgroundColor: "#E91E63",
     }
   };
 
@@ -20,28 +23,38 @@ class SearchResults extends React.Component {
     fetch(`https://api.chucknorris.io/jokes/search?query=${query}`, {method: 'GET'})
       .then(response => response.json())
       .then(res => {
-        this.setState({jokes: res.result}); // Array of jokes
+        for(let joke of res.result){
+          this.state.jokes.push({key: uuid(), value:joke.value})
+        }
         this.setState({isLoading: false});
       })
   }
+
+
 
   render() {
     
     if(this.state.isLoading){
       return <View><Text>Loading...</Text></View>
+    } else if(this.state.jokes.length == 0){
+      return (
+        <View>
+          <Text style={styles.headerText}>Search result for :</Text>
+          <Text style={{textAlign: 'center', fontSize:30, fontStyle: 'italic'}}>{this.props.navigation.state.params.query}</Text>
+          <Text>No matches...</Text>
+        </View>
+        )
     }
     return (
-      <View style={styles.container}>
-        <Text style={styles.headerText}>SearchResults</Text>
-        <Text>{this.props.navigation.state.params.query}</Text>
-        <Button
-          title="Go Back"
-          onPress={() => this.props.navigation.goBack()}
-        />
-        {this.state.jokes.map(joke => (
-          <Text>{joke.value}</Text>
-        )
-        )}
+      <View>
+        <Text style={styles.headerText}>Search result for :</Text>
+        <Text style={{textAlign: 'center', fontSize:30, fontStyle: 'italic'}}>{this.props.navigation.state.params.query}</Text>
+        <ScrollView>
+          {this.state.jokes.map(joke => (
+              <Text style={{margin: 3, borderWidth:2, borderColor: 'gray'}} key={joke.key}>{joke.value}</Text>    
+            ))}
+        </ScrollView>
+       
       </View>
     );
   }
