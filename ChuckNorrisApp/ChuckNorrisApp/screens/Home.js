@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Text,
   View,
-  Button
+  Button,
+  Alert
 } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 
@@ -12,7 +13,24 @@ class Home extends React.Component {
  
   constructor() {
     super();
-    this.state = { query: 'Search...' }
+    this.state = { 
+      query: 'Search...', 
+      categories : [],
+      categoriesButtons: []
+    }
+
+    fetch('https://api.chucknorris.io/jokes/categories', {
+      method: 'GET'
+    }).then(response => response.json())
+      .then(categories => {
+        this.setState(categories)
+      })
+      let categoriesButtons = [];
+      for(let category of this.state.categories){
+        this.state.categoriesButtons.push(
+          <Button title={category} />
+        )
+      }
   }
 
    static navigationOptions = {
@@ -28,7 +46,7 @@ class Home extends React.Component {
   }; 
 
   onPressSearch = () => {
-    // Making HTTP request and going to another activity
+    //Passing data to another screen
   }
  
   render() {
@@ -51,6 +69,7 @@ class Home extends React.Component {
           onPress={() => this.props.navigation.navigate('SearchResults')}
         />
       </View>
+      
     );
   }
 }
